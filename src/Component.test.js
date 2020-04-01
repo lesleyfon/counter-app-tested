@@ -22,4 +22,13 @@ describe("Mount <Component />", () => {
       <Component />
     </Provider>
   );
+
+  test('should add to count and display the correct # of counts ', () => {
+    const wrapper = getWrapper();
+    expect(wrapper.find('h3').text()).toEqual('Count: 0')
+    wrapper.find('button').simulate('click');
+    expect(wrapper.find('h3').text()).toEqual('Count: 1')
+
+  })
+  
 });
