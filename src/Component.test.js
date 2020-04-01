@@ -8,6 +8,7 @@ import { createStore } from "redux";
 //Component
 import Component from "./Component";
 import reducer from "./reducer";
+import { addCount } from './actions';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
 
@@ -27,8 +28,21 @@ describe("Mount <Component />", () => {
     const wrapper = getWrapper();
     expect(wrapper.find('h3').text()).toEqual('Count: 0')
     wrapper.find('button').simulate('click');
-    expect(wrapper.find('h3').text()).toEqual('Count: 1')
+    wrapper.find('button').simulate('click');
+    expect(wrapper.find('h3').text()).toEqual('Count: 2')
+    
+  });
+  
+  it('should dispatch the correct action on button click', () => {
+    const mockStore = createStore(reducer, { count: 0 });
+    mockStore.dispatch = jest.fn();
 
-  })
+    const wrapper = getWrapper(mockStore);
+    wrapper.find('button').simulate('click');
+    mockStore.dispatch(addCount());
+    expect(mockStore.dispatch).toHaveBeenCalledWith({type:  'ADD_COUNT_TYPE'});
+  });
+ 
+  
   
 });
